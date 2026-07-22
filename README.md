@@ -1,16 +1,10 @@
 <div align="center">
 
-#Daily Midnight Sudoku
+Daily Midnight Sudoku
 
 *“A puzzle a day keeps the wrinkles away.”*
 
 <br/>
-
-[![Daily Reset](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME/actions/workflows/daily-reset.yml/badge.svg)](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME/actions)
-[![License: MIT](https://img.shields.shields.io/badge/License-MIT-38BDF8.svg)](https://opensource.org/licenses/MIT)
-[![Theme](https://img.shields.shields.io/badge/Theme-Navy%20Cosmic-0A0F1D?style=flat&color=0A0F1D&labelColor=111A2E)](#)
-
-</div>
 
 ---
 
