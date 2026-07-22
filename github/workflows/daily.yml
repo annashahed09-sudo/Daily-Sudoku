@@ -1,0 +1,30 @@
+name: Generate Daily Sudoku Widget
+
+on:
+  schedule:
+    # Runs automatically at 00:00 UTC every day
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Allows you to manually click a button to test/run it instantly
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository Code
+      uses: actions/checkout@v3
+
+    - name: Setup Python Environment
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Run Sudoku Engine Script
+      run: python generate_sudoku.py
+
+    - name: Commit and Push Updated SVG
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@://github.com"
+        git add sudoku.svg
+        git diff-index --quiet HEAD || git commit -m "Automated update: Today's Sudoku Board Layout"
+        git push
