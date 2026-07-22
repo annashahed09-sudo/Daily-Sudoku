@@ -1,7 +1,7 @@
 <div align="center">
 
 
-          S  U  D  O  K  U   •   E  V  E  R  Y   N  I  G  H  T          
+                   S  U  D  O  K  U   •   E  V  E  R  Y   N  I  G  H  T          
 
 “A puzzle a day keeps the wrinkles away.”
 
