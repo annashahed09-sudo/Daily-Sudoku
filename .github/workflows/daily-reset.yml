@@ -1,0 +1,27 @@
+name: Daily Midnight Sudoku Reset
+
+on:
+  schedule:
+    # Trigger automatically at 00:00 UTC every day
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions UI
+
+jobs:
+  refresh-puzzle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Refresh Daily Seed
+        run: |
+          DATE=$(date +'%Y-%m-%d')
+          echo "{\"last_updated\": \"$DATE\"}" > puzzle-data.json
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add puzzle-data.json
+          git commit -m "chore: automated daily sudoku reset for $(date +'%Y-%m-%d')" || exit 0
+          git push
