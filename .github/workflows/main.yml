@@ -2,9 +2,11 @@ name: Generate Daily Sudoku Widget
 
 on:
   schedule:
-    # Runs automatically at 00:00 UTC every day
     - cron: '0 0 * * *'
-  workflow_dispatch: # Allows you to manually click a button to test/run it instantly
+  workflow_dispatch: 
+
+env:
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: 'true'
 
 jobs:
   build:
