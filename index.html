@@ -5,16 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daily Midnight Sudoku</title>
   <style>
+    /* Google Fonts for Serif & Monospace */
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;600&display=swap');
+
     :root {
-      --bg-color: #0A0F1D;       /* Deep Navy Space */
-      --card-bg: #111A2E;      /* Dark Slate Navy Card */
-      --border-color: #23314E;  /* Grid & Card Borders */
-      --grid-thick: #3B82F6;   /* Sub-grid 3x3 Border */
-      --text-primary: #F8FAFC; /* Bright White */
-      --text-muted: #94A3B8;   /* Muted Slate */
-      --accent-glow: #38BDF8;  /* Cyan Neon Accent */
-      --cell-selected: #1E3A8A;/* Cell Selection Blue */
-      --cell-hover: #1E293B;
+      --bg-color: #070B14;       /* Deep Midnight Navy */
+      --card-bg: #0D1527;      /* Dark Slate Navy Card */
+      --grid-border: #1E293B;  /* Fine Grid Borders */
+      --grid-accent: #38BDF8;  /* Subtle Cyan Sub-grid Line */
+      --text-primary: #FFFFFF; /* Pure White Numbers & Headings */
+      --text-muted: #94A3B8;   /* Muted Serif Text */
+      --accent-glow: #F1F5F9;  /* Cream White Accent */
+      --cell-selected: #1E3A8A;/* Deep Blue Selected State */
+      --cell-hover: #162035;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,7 +25,7 @@
     body {
       background-color: var(--bg-color);
       color: var(--text-primary);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      font-family: 'Times New Roman', Times, 'Playfair Display', serif;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -39,40 +42,58 @@
       align-items: center;
     }
 
-    .header-box {
+    /* Top Artwork & Header Visuals */
+    .art-header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--grid-border);
+      padding-bottom: 16px;
+      width: 100%;
     }
 
-    .header-box h1 {
-      font-size: 1.5rem;
-      letter-spacing: 3px;
+    .art-illustration {
+      font-family: monospace;
+      font-size: 0.65rem;
+      line-height: 1.1;
+      color: var(--text-muted);
+      white-space: pre;
+      margin-bottom: 16px;
+      opacity: 0.85;
+    }
+
+    .art-header h1 {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--text-primary);
+      color: #FFFFFF;
       margin-bottom: 6px;
     }
 
-    .header-box p {
+    .art-header p {
       font-size: 0.8rem;
+      font-style: italic;
       color: var(--text-muted);
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
     }
 
+    /* Stats Dashboard */
     .stats-bar {
       width: 100%;
       display: flex;
       justify-content: space-around;
       background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--grid-border);
+      border-radius: 4px;
+      padding: 10px 16px;
+      margin-bottom: 24px;
+      font-family: 'Times New Roman', Times, serif;
     }
 
     .stat-item { text-align: center; }
-    .stat-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
-    .stat-value { font-size: 1.15rem; font-weight: 700; color: var(--accent-glow); margin-top: 2px; }
+    .stat-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
+    .stat-value { font-size: 1.1rem; font-family: 'JetBrains Mono', monospace; color: #FFFFFF; margin-top: 2px; }
 
     /* Sudoku Board Grid */
     .sudoku-grid {
@@ -81,11 +102,11 @@
       grid-template-rows: repeat(9, 1fr);
       width: 100%;
       aspect-ratio: 1 / 1;
-      background-color: var(--border-color);
-      border: 2px solid var(--accent-glow);
-      border-radius: 6px;
+      background-color: var(--grid-border);
+      border: 2px solid var(--grid-accent);
+      border-radius: 4px;
       overflow: hidden;
-      box-shadow: 0 0 30px rgba(56, 189, 248, 0.12);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     }
 
     .cell {
@@ -93,24 +114,25 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--text-primary);
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #FFFFFF; /* Pure White Numbers */
       cursor: pointer;
       user-select: none;
       transition: background 0.15s ease;
-      border: 1px solid rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .cell:hover { background-color: var(--cell-hover); }
     .cell.selected { background-color: var(--cell-selected) !important; }
-    .cell.given { color: var(--text-muted); cursor: not-allowed; font-weight: 400; }
-    .cell.user-filled { color: var(--accent-glow); }
-    .cell.error { color: #EF4444; }
+    .cell.given { color: #FFFFFF; font-weight: 600; }
+    .cell.user-filled { color: var(--grid-accent); font-weight: 400; }
+    .cell.error { color: #F87171; }
 
-    /* 3x3 Box Sub-Borders */
-    .cell[data-col="2"], .cell[data-col="5"] { border-right: 2px solid var(--grid-thick); }
-    .cell[data-row="2"], .cell[data-row="5"] { border-bottom: 2px solid var(--grid-thick); }
+    /* Thick 3x3 Box Sub-Borders */
+    .cell[data-col="2"], .cell[data-col="5"] { border-right: 2px solid var(--grid-accent); }
+    .cell[data-row="2"], .cell[data-row="5"] { border-bottom: 2px solid var(--grid-accent); }
 
     /* Numpad Controls */
     .numpad {
@@ -118,32 +140,32 @@
       grid-template-columns: repeat(10, 1fr);
       gap: 6px;
       width: 100%;
-      margin-top: 20px;
+      margin-top: 24px;
     }
 
     .num-btn {
       background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
-      padding: 12px 0;
-      border-radius: 6px;
-      font-size: 1rem;
-      font-weight: bold;
+      border: 1px solid var(--grid-border);
+      color: #FFFFFF;
+      padding: 10px 0;
+      border-radius: 4px;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 1.1rem;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .num-btn:hover {
-      border-color: var(--accent-glow);
-      color: var(--accent-glow);
+      border-color: var(--grid-accent);
+      color: var(--grid-accent);
     }
 
-    /* Modal Styling */
+    /* Completion Overlay */
     .modal-overlay {
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(10, 15, 29, 0.92);
+      background: rgba(7, 11, 20, 0.95);
       backdrop-filter: blur(8px);
       align-items: center;
       justify-content: center;
@@ -152,25 +174,35 @@
 
     .modal-card {
       background: var(--card-bg);
-      border: 1px solid var(--accent-glow);
+      border: 1px solid var(--grid-accent);
       padding: 32px;
-      border-radius: 12px;
+      border-radius: 8px;
       text-align: center;
       max-width: 320px;
-      box-shadow: 0 0 40px rgba(56, 189, 248, 0.2);
+      color: #FFFFFF;
     }
 
-    .modal-card h2 { color: var(--accent-glow); margin-bottom: 8px; font-size: 1.4rem; }
-    .modal-card p { color: var(--text-muted); font-size: 0.9rem; margin-top: 6px; }
-    .score-highlight { font-size: 1.8rem; font-weight: bold; color: var(--text-primary); margin: 16px 0; }
+    .modal-card h2 { font-size: 1.4rem; font-weight: 400; margin-bottom: 8px; }
+    .score-highlight { font-size: 1.8rem; font-family: 'JetBrains Mono', monospace; margin: 16px 0; color: var(--grid-accent); }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <div class="header-box">
-      <h1>Daily Midnight Sudoku</h1>
-      <p>A PUZZLE A DAY KEEPS THE WRINKLES AWAY • RESETS 00:00 UTC</p>
+    <div class="art-header">
+      <div class="art-illustration">
+       .---.
+      /     \
+     |   .   |
+     |  /|\  |
+    /|   |   |\
+   /_|___|___|_\
+  ║  [===]  ║
+  ║  | | |  ║
+  ```━━━━━━━```
+      </div>
+      <h1>A PUZZLE A DAY KEEPS THE WRINKLES AWAY ®</h1>
+      <p>Daily Midnight Sudoku • Resets automatically at 00:00 UTC</p>
     </div>
 
     <div class="stats-bar">
@@ -181,10 +213,6 @@
       <div class="stat-item">
         <div class="stat-label">Errors</div>
         <div class="stat-value" id="mistakes">0 / 3</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">Status</div>
-        <div class="stat-value" id="game-status" style="color: var(--text-primary);">Playing</div>
       </div>
     </div>
 
@@ -206,15 +234,15 @@
 
   <div class="modal-overlay" id="winModal">
     <div class="modal-card">
-      <h2>Puzzle Completed! 🎉</h2>
-      <p>Time Taken: <span id="finalTime" style="color: #fff;"></span></p>
+      <h2>Puzzle Solved</h2>
+      <p>Time Elapsed: <span id="finalTime"></span></p>
       <div class="score-highlight" id="finalScore">0 PTS</div>
-      <p>Come back tomorrow at midnight UTC for a new board!</p>
+      <p style="font-size: 0.85rem; color: var(--text-muted);">Come back at midnight UTC for tomorrow's challenge.</p>
     </div>
   </div>
 
   <script>
-    // Sample Daily Puzzle Seed (Image #2 exact puzzle structure)
+    // Puzzle setup based on Reference Image
     const initialPuzzle = [
       [7, 0, 0, 1, 0, 3, 0, 9, 6],
       [3, 5, 0, 0, 6, 2, 0, 0, 7],
@@ -288,7 +316,7 @@
         mistakes++;
         document.getElementById('mistakes').innerText = `${mistakes} / 3`;
         if (mistakes >= 3) {
-          alert('Game Over! You made 3 mistakes.');
+          alert('Game Over! Maximum errors reached.');
           resetGame();
         }
       } else {
@@ -325,9 +353,9 @@
 
       if (filled === 81 && !hasError) {
         clearInterval(timerInterval);
-        const calculatedScore = Math.max(10000 - (secondsElapsed * 12) - (mistakes * 500), 500);
+        const score = Math.max(10000 - (secondsElapsed * 10) - (mistakes * 500), 500);
         document.getElementById('finalTime').innerText = document.getElementById('timer').innerText;
-        document.getElementById('finalScore').innerText = `${calculatedScore} PTS`;
+        document.getElementById('finalScore').innerText = `${score} PTS`;
         document.getElementById('winModal').style.display = 'flex';
       }
     }
@@ -339,7 +367,6 @@
       renderBoard();
     }
 
-    // Keyboard Support
     document.addEventListener('keydown', (e) => {
       if (e.key >= '1' && e.key <= '9') inputNumber(parseInt(e.key));
       if (e.key === 'Backspace' || e.key === 'Delete') eraseNumber();
