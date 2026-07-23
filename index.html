@@ -48,24 +48,6 @@
       align-items: center;
     }
 
-    /* Header & Vector Lighthouse Design */
-    .art-header {
-      text-align: center;
-      margin-bottom: 20px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .lighthouse-svg {
-      width: 120px;
-      height: 120px;
-      margin-bottom: 12px;
-      filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.4));
-      shape-rendering: geometricPrecision;
-    }
-
     .art-header h1 {
       font-family: 'Times New Roman', Times, serif;
       font-size: 1.25rem;
@@ -83,7 +65,7 @@
       color: var(--text-muted);
     }
 
-    /* Stats Dashboard */
+
     .stats-bar {
       width: 100%;
       display: flex;
@@ -100,7 +82,7 @@
     .stat-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
     .stat-value { font-size: 1.15rem; font-weight: bold; color: var(--text-white); margin-top: 2px; }
 
-    /* High-Resolution Sudoku Board Grid */
+    
     .sudoku-grid {
       display: grid;
       grid-template-columns: repeat(9, 1fr);
@@ -135,11 +117,11 @@
     .cell.user-filled { color: var(--grid-accent) !important; font-weight: normal; }
     .cell.error { color: #EF4444 !important; }
 
-    /* 3x3 Sub-Grid Borders */
+    
     .cell[data-col="2"], .cell[data-col="5"] { border-right: 2px solid var(--grid-accent); }
     .cell[data-row="2"], .cell[data-row="5"] { border-bottom: 2px solid var(--grid-accent); }
 
-    /* Numpad Controls */
+    
     .numpad {
       display: grid;
       grid-template-columns: repeat(10, 1fr);
@@ -166,7 +148,7 @@
       color: var(--grid-accent);
     }
 
-    /* Modal Victory Overlay */
+    
     .modal-overlay {
       display: none;
       position: fixed;
@@ -250,7 +232,7 @@
   </div>
 
   <script>
-    // Pool of classic Sudoku Puzzles with Solutions
+    
     const puzzleBank = [
       {
         initial: [
