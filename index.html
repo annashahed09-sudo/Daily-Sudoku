@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Midnight Sudoku</title>
+  <style>
+    :root {
+      --bg-color: #050814;
+      --card-bg: #0A1020;
+      --grid-border: #1E293B;
+      --grid-accent: #38BDF8;
+      --text-white: #FFFFFF;
+      --text-muted: #94A3B8;
+      --cell-selected: #1E3A8A;
+      --cell-hover: #111B30;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-white);
+      font-family: 'Times New Roman', Times, serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .art-header {
+      text-align: center;
+      margin-bottom: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lighthouse-svg {
+      width: 110px;
+      height: 110px;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.35));
+    }
+
+    .art-header h1 {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 1.2rem;
+      font-weight: normal;
+      font-style: italic;
+      letter-spacing: 1px;
+      color: var(--text-white);
+      margin-bottom: 6px;
+    }
+
+    .art-header p {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    .stats-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background: var(--card-bg);
+      border: 1px solid var(--grid-border);
+      border-radius: 4px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    .stat-value {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--text-white);
+      margin-top: 2px;
+    }
+
+    .sudoku-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-rows: repeat(9, 1fr);
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background-color: var(--grid-border);
+      border: 2px solid var(--grid-accent);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .cell {
+      background-color: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #FFFFFF !important;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s ease;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .cell:hover {
+      background-color: var(--cell-hover);
+    }
+
+    .cell.selected {
+      background-color: var(--cell-selected) !important;
+    }
+
+    .cell.given {
+      color: #FFFFFF !important;
+    }
+
+    .cell.user-filled {
+      color: var(--grid-accent) !important;
+      font-weight: normal;
+    }
+
+    .cell.error {
+      color: #EF4444 !important;
+    }
+
+    .cell[data-col="2"], .cell[data-col="5"] {
+      border-right: 2px solid var(--grid-accent);
+    }
+
+    .cell[data-row="2"], .cell[data-row="5"] {
+      border-bottom: 2px solid var(--grid-accent);
+    }
+
+    .numpad {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .num-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--grid-border);
+      color: #FFFFFF;
+      padding: 10px 0;
+      border-radius: 4px;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .num-btn:hover {
+      border-color: var(--grid-accent);
+      color: var(--grid-accent);
+    }
+
+    .modal-overlay {
